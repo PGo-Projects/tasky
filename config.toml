@@ -1,0 +1,9 @@
+web-assets-path = "web/dist"
+
+authentication-key = ""
+encryption-key = ""
+csrf-authentication-key = ""
+
+sock-name = "/tmp/tasky.sock"
+db-name = "tasky"
+allowed-origins = ["http://localhost:8080", "https://tasky.pchancs.com"]
