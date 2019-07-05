@@ -1,0 +1,3 @@
+[submodule "web/public/font-awesome-pro"]
+	path = web/public/font-awesome-pro
+	url = git@github.com:pchan37/font-awesome-pro.git
