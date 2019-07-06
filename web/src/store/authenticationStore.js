@@ -6,10 +6,20 @@ const authentication = {
     isLoggedIn: false,
     status: undefined,
     statusType: undefined,
+    username: undefined,
   },
   mutations: {
+    setUsername(state, username) {
+      state.username = username;
+    },
+    clearUsername(state) {
+      state.username = undefined;
+    },
     setIsLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
+    },
+    clearIsLoggedIn(state) {
+      state.isLoggedIn = false;
     },
     setStatus(state, payload) {
       state.status = payload.status;
@@ -24,11 +34,13 @@ const authentication = {
     checkAuth: async ({ commit }) => {
       await axios.get('/is_logged_in').then((response) => {
         commit('setIsLoggedIn', response.data.isLoggedIn === 'true');
+        commit('setUsername', response.data.username);
       });
     },
   },
   getters: {
     isLoggedIn: state => state.isLoggedIn,
+    username: state => state.username,
     status: state => state.status,
     statusType: state => state.statusType,
   },

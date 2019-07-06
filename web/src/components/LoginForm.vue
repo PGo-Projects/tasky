@@ -89,6 +89,7 @@ export default {
     ...mapMutations('authentication', [
       'clearStatus',
       'setStatus',
+      'setUsername',
     ]),
     async login(submitEvent) {
       if (!this.$refs.form.validate()) {
@@ -111,6 +112,7 @@ export default {
           statusType: response.data.statusType,
         });
         if (this.statusType === 'success') {
+          this.setUsername(response.data.username);
           this.$router.push(this.successfulLoginLink);
         } else {
           this.$refs.form.reset();
