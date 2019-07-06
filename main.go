@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/PGo-Projects/output"
-	"github.com/PGo-Projects/web-template/internal/config"
-	"github.com/PGo-Projects/web-template/internal/server"
+	"github.com/PGo-Projects/tasky/internal/config"
+	"github.com/PGo-Projects/tasky/internal/server"
 	"github.com/spf13/cobra"
 )
 

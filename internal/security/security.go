@@ -5,8 +5,8 @@ import (
 	"encoding/base64"
 
 	"github.com/PGo-Projects/output"
-	"github.com/PGo-Projects/web-template/internal/config"
-	"github.com/PGo-Projects/web-template/internal/securitydb"
+	"github.com/PGo-Projects/tasky/internal/config"
+	"github.com/PGo-Projects/tasky/internal/securitydb"
 	"github.com/PGo-Projects/webauth"
 	"github.com/go-chi/chi"
 	"github.com/spf13/viper"

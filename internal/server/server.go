@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/PGo-Projects/output"
-	"github.com/PGo-Projects/web-template/internal/config"
-	"github.com/PGo-Projects/web-template/internal/security"
+	"github.com/PGo-Projects/tasky/internal/config"
+	"github.com/PGo-Projects/tasky/internal/security"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/gorilla/csrf"

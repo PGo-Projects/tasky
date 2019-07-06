@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/PGo-Projects/web-template/internal/config"
-	"github.com/PGo-Projects/web-template/internal/database"
+	"github.com/PGo-Projects/tasky/internal/config"
+	"github.com/PGo-Projects/tasky/internal/database"
 	"github.com/PGo-Projects/webauth"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson"

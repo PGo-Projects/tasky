@@ -1,10 +1,10 @@
-module github.com/PGo-Projects/web-template
+module github.com/PGo-Projects/tasky
 
 go 1.12
 
 require (
 	github.com/PGo-Projects/output v0.0.0-20190705143419-89dd5f028db5
-	github.com/PGo-Projects/webauth v0.0.0-20190705145037-b27e5e2548ae
+	github.com/PGo-Projects/webauth v0.0.0-20190706204152-bb45124524e9
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/golang/gddo v0.0.0-20190419222130-af0f2af80721 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
