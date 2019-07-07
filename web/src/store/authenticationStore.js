@@ -34,7 +34,11 @@ const authentication = {
     checkAuth: async ({ commit }) => {
       await axios.get('/is_logged_in').then((response) => {
         commit('setIsLoggedIn', response.data.isLoggedIn === 'true');
-        commit('setUsername', response.data.username);
+        if (response.data.username !== '') {
+          commit('setUsername', response.data.username);
+        } else {
+          commit('setUsername', undefined);
+        }
       });
     },
   },
