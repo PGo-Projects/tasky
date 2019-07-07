@@ -100,6 +100,7 @@ import { mapActions, mapGetters } from 'vuex';
 import authenticationMixin from '@/mixins/authentication';
 
 export default {
+  name: 'home',
   mixins: [authenticationMixin],
   created() {
     this.checkAuth();
@@ -124,7 +125,7 @@ export default {
 
 <style lang="scss">
 .toolbar-title {
-    color: inherit;
-    text-decoration: inherit;
+  color: inherit;
+  text-decoration: inherit;
 }
 </style>

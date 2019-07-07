@@ -5,5 +5,13 @@ module.exports = {
     plugins: [
       new VuetifyLoaderPlugin()
     ]
-  }
+  },
+  pages: {
+    index: {
+      entry: './src/pages/Index/main.js',
+      template: 'public/index.html',
+      title: 'home',
+      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+    },
+  },
 };
