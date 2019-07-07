@@ -113,6 +113,7 @@ export default {
         });
         if (this.statusType === 'success') {
           this.setUsername(response.data.username);
+          this.clearStatus();
           this.$router.push(this.successfulLoginLink);
         } else {
           this.$refs.form.reset();
