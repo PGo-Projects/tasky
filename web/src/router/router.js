@@ -24,6 +24,30 @@ const router = new Router({
       name: 'register',
       component: () => import('../views/Register.vue'),
     },
+    {
+      path: '/today',
+      name: 'todaytasks',
+      component: () => import('../views/TodayTasks.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/upcoming',
+      name: 'upcomingtasks',
+      component: () => import('../views/UpcomingTasks.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/thought_cloud',
+      name: 'thoughtcloud',
+      component: () => import('../views/ThoughtCloud.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/completed',
+      name: 'completedtasks',
+      component: () => import('../views/CompletedTasks.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 

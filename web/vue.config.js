@@ -13,5 +13,11 @@ module.exports = {
       title: 'home',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
+    tasky: {
+      entry: './src/pages/Tasky/main.js',
+      template: 'public/tasky.html',
+      title: 'tasky',
+      chunks: ['chunk-vendors', 'chunk-common', 'tasky'],
+    },
   },
 };

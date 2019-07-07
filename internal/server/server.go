@@ -11,6 +11,7 @@ import (
 	"github.com/PGo-Projects/output"
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/security"
+	"github.com/PGo-Projects/tasky/internal/views"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/gorilla/csrf"
@@ -43,6 +44,7 @@ func MustRun(cmd *cobra.Command, arg []string) {
 	mux.Use(middleware.Logger)
 
 	security.MustSetup(mux)
+	views.RegisterEndPoints(mux)
 	mux.MethodFunc(http.MethodGet, "/*", serveStaticOrIndex)
 
 	if config.DevRun {
