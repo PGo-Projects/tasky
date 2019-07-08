@@ -91,7 +91,7 @@
             <v-icon>fal fa-angle-down</v-icon>
           </v-btn>
         </template>
-        <v-list dense>
+        <v-list>
           <v-list-tile>
             <v-list-tile-action>
               <v-icon>fas fa-user</v-icon>
