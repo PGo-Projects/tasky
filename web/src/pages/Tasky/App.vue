@@ -90,7 +90,7 @@
     </v-toolbar-side-icon>
 
     <v-toolbar-title>
-      <router-link to="/tasky" class="toolbar-title">Tasky</router-link>
+      Tasky
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
@@ -169,10 +169,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.toolbar-title {
-  color: inherit;
-  text-decoration: inherit;
-}
-</style>
