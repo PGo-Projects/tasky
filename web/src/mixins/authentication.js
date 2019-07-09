@@ -16,7 +16,7 @@ const authenticationMixin = {
       }).then(() => {
         this.clearUsername();
         this.clearIsLoggedIn();
-        this.$router.push('/');
+        location.assign('/');
       });
     },
   },
