@@ -29,12 +29,20 @@
           <v-list-tile-title>Upcoming</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile to="/thought_cloud">
+      <v-list-tile to="/long_term">
         <v-list-tile-action>
-          <v-icon>far fa-cloud</v-icon>
+          <v-icon class="ml-1">far fa-calendar</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Thought Cloud</v-list-tile-title>
+          <v-list-tile-title>Long Term</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile to="/incomplete">
+        <v-list-tile-action>
+          <v-icon class="ml-1">far fa-calendar-exclamation</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Incomplete</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile to="/completed">
@@ -43,6 +51,14 @@
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>Completed</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile to="/thought_cloud">
+        <v-list-tile-action>
+          <v-icon>far fa-cloud</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Thought Cloud</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
