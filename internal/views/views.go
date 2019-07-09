@@ -10,11 +10,12 @@ import (
 )
 
 func RegisterEndPoints(mux *chi.Mux) {
-	mux.Get("/tasky", TaskyHandler)
 	mux.Get("/today", TaskyHandler)
 	mux.Get("/upcoming", TaskyHandler)
-	mux.Get("/thought_cloud", TaskyHandler)
+	mux.Get("/long_term", TaskyHandler)
+	mux.Get("/incomplete", TaskyHandler)
 	mux.Get("/completed", TaskyHandler)
+	mux.Get("/thought_cloud", TaskyHandler)
 }
 
 func TaskyHandler(w http.ResponseWriter, r *http.Request) {
