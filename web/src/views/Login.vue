@@ -2,7 +2,8 @@
 <v-container fluid fill-height>
   <v-layout row align-center>
     <v-flex xs12 sm8 offset-sm2 md8 offset-md2 lg4 offset-lg4>
-      <login-form></login-form>
+      <login-form successful-login-link="/today" successful-login-force-load="true">
+      </login-form>
     </v-flex>
   </v-layout>
 </v-container>
