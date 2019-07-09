@@ -114,7 +114,11 @@ export default {
         if (this.statusType === 'success') {
           this.setUsername(response.data.username);
           this.clearStatus();
-          this.$router.push(this.successfulLoginLink);
+          if (this.successfulLoginForceLoad) {
+            location.assign(this.successfulLoginLink);
+          } else {
+            this.$router.push(this.successfulLoginLink);
+          }
         } else {
           this.$refs.form.reset();
           const usernameField = document.getElementById('username');
@@ -136,6 +140,10 @@ export default {
     successfulLoginLink: {
       default: '/',
       type: String,
+    },
+    successfulLoginForceLoad: {
+      default: false,
+      type: Boolean,
     },
     loginLink: {
       default: '/login',
