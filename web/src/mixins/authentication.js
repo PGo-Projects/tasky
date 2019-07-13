@@ -16,7 +16,7 @@ const authenticationMixin = {
       }).then(() => {
         this.clearUsername();
         this.clearIsLoggedIn();
-        location.assign('/');
+        window.location.assign('/');
       });
     },
   },

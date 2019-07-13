@@ -115,7 +115,7 @@ export default {
           this.setUsername(response.data.username);
           this.clearStatus();
           if (this.successfulLoginForceLoad) {
-            location.assign(this.successfulLoginLink);
+            window.location.assign(this.successfulLoginLink);
           } else {
             this.$router.push(this.successfulLoginLink);
           }
