@@ -62,7 +62,7 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-    <div class="hidden-md-and-up">
+    <div class="hidden-lg-and-up">
       <v-divider></v-divider>
       <v-list dense>
         <v-list-tile>
@@ -86,7 +86,7 @@
   </v-navigation-drawer>
 
   <v-toolbar fixed clipped-left app dark color="primary">
-    <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer;">
+    <v-toolbar-side-icon class="hidden-lg-and-up" @click.stop="drawer = !drawer;">
     </v-toolbar-side-icon>
 
     <v-toolbar-title>
@@ -95,7 +95,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-toolbar-items class="hidden-md-and-down">
       <v-btn flat to="/login" v-if="username === undefined">
         <v-icon>fas fa-sign-in-alt</v-icon>
         <span class="ml-2">Login</span>
