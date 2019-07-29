@@ -2,7 +2,7 @@
 <v-app>
   <v-navigation-drawer clipped fixed v-model="drawer" app>
     <v-list>
-      <v-list-tile>
+      <v-list-tile @click.stop="openEmptyTaskForm();">
         <v-list-tile-action>
           <v-icon class="ml-1">far fa-plus</v-icon>
         </v-list-tile-action>
@@ -139,15 +139,36 @@
     </v-flex>
   </v-footer>
 
+  <task-form v-if="taskInfo !== undefined" v-model="taskOpenForm"
+             :info="taskInfo"
+             :action="taskAction">
+  </task-form>
+
+  <v-dialog v-if="mainStatus !== undefined" value=true persistent max-width="500px">
+    <v-card>
+      <v-card-text>
+        {{ mainStatus }}
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="info" flat @click="clearMainStatus">OK</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
 </v-app>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import authenticationMixin from '@/mixins/authentication';
+
+import TaskForm from '@/components/TaskForm.vue';
 
 export default {
   name: 'tasky',
+  components: { TaskForm },
   mixins: [authenticationMixin],
   created() {
     this.checkAuth();
@@ -161,10 +182,25 @@ export default {
     ...mapGetters('authentication', [
       'username',
     ]),
+    ...mapGetters('status', [
+      'mainStatus',
+      // 'clearMainStatus',
+    ]),
+    ...mapGetters('taskForm', [
+      'taskOpenForm',
+      'taskInfo',
+      'taskAction',
+    ]),
   },
   methods: {
     ...mapActions('authentication', [
       'checkAuth',
+    ]),
+    ...mapMutations('status', [
+      'clearMainStatus',
+    ]),
+    ...mapActions('taskForm', [
+      'openEmptyTaskForm',
     ]),
   },
 };
