@@ -52,7 +52,7 @@ func insertTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var responseJSON []byte
-	if err != nil {
+	if err != response.Successful {
 		responseJSON = response.Error(err)
 	} else {
 		responseJSON = response.General(map[string]string{
@@ -74,7 +74,7 @@ func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var responseJSON []byte
-	if err != nil {
+	if err != response.Successful {
 		responseJSON = response.Error(err)
 	} else {
 		responseJSON = response.Status(successMessage, response.StatusSuccess)
@@ -92,7 +92,7 @@ func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var responseJSON []byte
-	if err != nil {
+	if err != response.Successful {
 		responseJSON = response.Error(err)
 	} else {
 		responseJSON = response.Status(successMessage, response.StatusSuccess)
