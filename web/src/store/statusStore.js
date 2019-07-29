@@ -56,6 +56,9 @@ const status = {
   getters: {
     status: state => state.status,
     statusType: state => state.type,
+
+    mainStatus: state => state.mainStatus,
+    mainStatusType: state => state.mainType,
   },
 };
 
