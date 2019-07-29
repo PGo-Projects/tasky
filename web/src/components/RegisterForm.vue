@@ -89,7 +89,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('authentication', [
+    ...mapGetters('status', [
       'status',
       'statusType',
     ]),
@@ -104,7 +104,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('authentication', [
+    ...mapMutations('status', [
       'clearStatus',
       'setStatus',
     ]),

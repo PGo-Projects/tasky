@@ -71,7 +71,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('authentication', [
+    ...mapGetters('status', [
       'status',
       'statusType',
     ]),
@@ -87,9 +87,11 @@ export default {
   },
   methods: {
     ...mapMutations('authentication', [
+      'setUsername',
+    ]),
+    ...mapMutations('status', [
       'clearStatus',
       'setStatus',
-      'setUsername',
     ]),
     async login(submitEvent) {
       if (!this.$refs.form.validate()) {

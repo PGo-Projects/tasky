@@ -4,8 +4,6 @@ const authentication = {
   namespaced: true,
   state: {
     isLoggedIn: false,
-    status: undefined,
-    statusType: undefined,
     username: undefined,
   },
   mutations: {
@@ -20,14 +18,6 @@ const authentication = {
     },
     clearIsLoggedIn(state) {
       state.isLoggedIn = false;
-    },
-    setStatus(state, payload) {
-      state.status = payload.status;
-      state.statusType = payload.statusType;
-    },
-    clearStatus(state) {
-      state.status = undefined;
-      state.statusType = undefined;
     },
   },
   actions: {
@@ -45,8 +35,6 @@ const authentication = {
   getters: {
     isLoggedIn: state => state.isLoggedIn,
     username: state => state.username,
-    status: state => state.status,
-    statusType: state => state.statusType,
   },
 };
 
