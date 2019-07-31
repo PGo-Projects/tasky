@@ -46,104 +46,68 @@ func taskyHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func insertTaskHandler(w http.ResponseWriter, r *http.Request) {
-	t, err := handleGenericTask(w, r, insert)
-	if err == response.ErrForbidden {
-		return
-	}
-
-	var responseJSON []byte
-	if err != response.Successful {
-		responseJSON = response.Error(err)
-	} else {
-		responseJSON = response.General(map[string]string{
-			"status":     successMessage,
-			"statusType": response.StatusSuccess,
-			"index":      strconv.FormatInt(t.Index, 10),
-		})
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(responseJSON)
+	handleGenericTask(w, r, insert)
 }
 
 func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := handleGenericTask(w, r, update)
-	if err == response.ErrForbidden {
-		return
-	}
-
-	var responseJSON []byte
-	if err != response.Successful {
-		responseJSON = response.Error(err)
-	} else {
-		responseJSON = response.Status(successMessage, response.StatusSuccess)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(responseJSON)
+	handleGenericTask(w, r, update)
 }
 
 func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := handleGenericTask(w, r, delete)
-	if err == response.ErrForbidden {
+	handleGenericTask(w, r, delete)
+}
+
+func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) {
+	username, isLoggedIn := webauth.IsLoggedIn(r)
+	if !isLoggedIn {
+		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
 
 	var responseJSON []byte
-	if err != response.Successful {
-		responseJSON = response.Error(err)
-	} else {
-		responseJSON = response.Status(successMessage, response.StatusSuccess)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(responseJSON)
-}
-
-func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) (*task.Task, error) {
-	username, isLoggedIn := webauth.IsLoggedIn(r)
-	if !isLoggedIn {
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return nil, response.ErrInternalServer
-	}
-
 	t, err := task.DecodeFromRequest(r)
 	if err != nil {
 		output.Errorln(err)
-		return nil, response.ErrInternalServer
+		responseJSON = response.Error(response.ErrInternalServer)
 	} else {
 		t.Username = username
 		filter := &task.Task{
 			Index:    t.Index,
 			Username: t.Username,
 		}
-		if err := executeTaskOp(op, filter, t); err != nil {
+		data, err := executeTaskOp(op, filter, t)
+		if err != nil {
 			output.Errorln(err)
-			return nil, response.ErrBadRequest
+			responseJSON = response.Error(response.ErrBadRequest)
 		} else {
-			return t, response.Successful
+			data["status"] = successMessage
+			data["statusType"] = response.StatusSuccess
+			responseJSON = response.General(data)
 		}
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
 }
 
-func executeTaskOp(op taskOp, filter *task.Task, t *task.Task) error {
+func executeTaskOp(op taskOp, filter *task.Task, t *task.Task) (map[string]string, error) {
+	var data map[string]string
 	switch op {
 	case insert:
-		return taskdb.InsertTask(t)
+		data["index"] = strconv.FormatInt(t.Index, 10)
+		return data, taskdb.InsertTask(t)
 	case update:
 		current, err := taskdb.GetTask(filter.Username, filter.Index)
 		if err != nil {
-			return err
+			return data, err
 		}
 		t.Predecessor = current.Predecessor
 		t.Successor = current.Successor
-		return taskdb.ReplaceTask(filter, t)
+		return data, taskdb.ReplaceTask(filter, t)
 	case delete:
-		return taskdb.DeleteTask(t)
+		return data, taskdb.DeleteTask(t)
 	default:
-		return errors.New("Not a valid option!")
+		return data, errors.New("Not a valid option!")
 	}
 }
