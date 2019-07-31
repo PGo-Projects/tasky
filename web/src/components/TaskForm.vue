@@ -24,8 +24,8 @@
                 :color="formColor"
                 label="Name"
                 name="name"
+                ref="name"
                 required
-                autofocus
                 ></v-text-field>
             </v-flex>
 
@@ -151,6 +151,9 @@ const EDIT_ACTION = 'edit';
 
 export default {
   name: 'TaskForm',
+  mounted() {
+    this.$nextTick(() => this.$refs.name.focus());
+  },
   computed: {
     ...mapGetters('status', [
       'status',
@@ -303,6 +306,7 @@ export default {
   watch: {
     openTaskForm() {
       this.$refs.form.resetValidation();
+      this.$nextTick(() => this.$refs.name.focus());
     },
   },
 };
