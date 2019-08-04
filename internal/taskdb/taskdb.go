@@ -110,6 +110,65 @@ func DeleteTask(t *task.Task) error {
 	return linkTasks(predecessor, successor)
 }
 
+func GetCategory(username, category string) ([]task.Task, error) {
+	dbName := viper.GetString(config.DBName)
+	tasks := dbClient.Database(dbName).Collection("tasks")
+
+	f := &task.Task{
+		Username: username,
+		Category: category,
+	}
+	// TODO: Ignore the index guard in the initial query
+	cursor, err := tasks.Find(context.TODO(), f)
+	if err != nil {
+		return nil, err
+	}
+
+	var tasks_found []task.Task
+	for cursor.Next(context.TODO()) {
+		var t task.Task
+		if err := cursor.Decode(&t); err != nil {
+			return nil, err
+		}
+
+		// If not the index guard, append it
+		if t.Index != -1 {
+			tasks_found = append(tasks_found, t)
+		}
+	}
+
+	return tasks_found, nil
+}
+
+func GetOrderedCategory(username, category string) ([]task.Task, error) {
+	tasks, err := GetCategory(username, category)
+	if err != nil {
+		return nil, err
+	}
+	if len(tasks) == 0 {
+		return tasks, nil
+	}
+
+	var firstTask task.Task
+	indexMap := make(map[int64]int)
+	for index, t := range tasks {
+		indexMap[t.Index] = index
+		if t.Predecessor == -1 {
+			firstTask = t
+		}
+	}
+
+	var ordered_tasks []task.Task
+	ordered_tasks = append(ordered_tasks, firstTask)
+
+	nextTask := tasks[indexMap[firstTask.Successor]]
+	for nextTask.Successor != -1 {
+		ordered_tasks = append(ordered_tasks, nextTask)
+		nextTask = tasks[indexMap[nextTask.Successor]]
+	}
+	return ordered_tasks, nil
+}
+
 func attemptToInsert(t *task.Task) bool {
 	predecessor, err := GetTask(t.Username, t.Predecessor)
 	if err != nil {
