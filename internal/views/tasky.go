@@ -1,6 +1,7 @@
 package views
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -34,6 +35,9 @@ func RegisterTaskyEndpoints(mux *chi.Mux) {
 	mux.Get("/completed", taskyHandler)
 	mux.Get("/thought_cloud", taskyHandler)
 
+	mux.Get("/get_category/{category}", getCategoryHandler)
+	mux.Get("/get_category/", getCategoryHandler)
+
 	mux.Post("/insert_task", insertTaskHandler)
 	mux.Post("/update_task", updateTaskHandler)
 	mux.Post("/delete_task", deleteTaskHandler)
@@ -43,6 +47,39 @@ func taskyHandler(w http.ResponseWriter, r *http.Request) {
 	r.URL.Path = "/tasky.html"
 	webAssetsDirectory := http.Dir(viper.GetString(config.WebAssetsPathKey))
 	gzipped.FileServer(webAssetsDirectory).ServeHTTP(w, r)
+}
+
+func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	username, isLoggedIn := webauth.IsLoggedIn(r)
+	if !isLoggedIn {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+
+	var responseJSON []byte
+	category := chi.URLParam(r, "category")
+	tasks, err := taskdb.GetOrderedCategory(username, category)
+	if err != nil {
+		responseJSON = response.Error(response.ErrInternalServer)
+	} else {
+		jsonTasks, err := json.Marshal(tasks)
+		if err != nil {
+			responseJSON = response.Error(response.ErrInternalServer)
+		} else {
+			responseJSON, err = json.Marshal(map[string]string{
+				"status":     successMessage,
+				"statusType": response.StatusSuccess,
+				"tasks":      string(jsonTasks),
+			})
+			if err != nil {
+				responseJSON = response.Error(response.ErrInternalServer)
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
 }
 
 func insertTaskHandler(w http.ResponseWriter, r *http.Request) {
