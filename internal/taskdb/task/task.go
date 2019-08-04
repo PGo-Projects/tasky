@@ -9,16 +9,16 @@ import (
 )
 
 type Task struct {
-	Name        string `bson:"name,omitempty"`
-	Date        string `bson:"date,omitempty"`
-	Time        string `bson:"time,omitempty"`
-	Description string `bson:"description,omitempty"`
-	Category    string `bson:"category,omitempty"`
+	Name        string `bson:"name,omitempty" json:"name"`
+	Date        string `bson:"date,omitempty" json:"date"`
+	Time        string `bson:"time,omitempty" json:"time"`
+	Description string `bson:"description,omitempty" json:"description"`
+	Category    string `bson:"category,omitempty" json:"category"`
 
-	Username    string `bson:"username"`
-	Index       int64  `bson:"index,omitempty"`
-	Predecessor int64  `bson:"predecessor,omitempty"`
-	Successor   int64  `bson:"successor,omitempty"`
+	Username    string `bson:"username" json:"-"`
+	Index       int64  `bson:"index,omitempty" json:"index"`
+	Predecessor int64  `bson:"predecessor,omitempty" json:"-"`
+	Successor   int64  `bson:"successor,omitempty" json:"-"`
 }
 
 func (t *Task) DateTime() *dateTime {
