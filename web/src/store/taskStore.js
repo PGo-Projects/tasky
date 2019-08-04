@@ -14,6 +14,9 @@ const task = {
     tasks: [],
   },
   mutations: {
+    setTasks(state, payload) {
+      state.tasks = payload.tasks;
+    },
     insertTask(state, payload) {
       const newTask = extractTask(payload);
       if (state.tasks.length === 0 || (payload.date === '' && payload.time === '')) {
