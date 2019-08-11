@@ -184,7 +184,6 @@ export default {
     ]),
     ...mapGetters('status', [
       'mainStatus',
-      // 'clearMainStatus',
     ]),
     ...mapGetters('taskForm', [
       'taskOpenForm',
