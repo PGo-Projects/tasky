@@ -83,11 +83,15 @@ export default {
         date: this.date,
         time: this.time,
         description: this.description,
+        category: this.category,
       }, {
         headers: { 'X-CSRF-TOKEN': resp.headers.get('X-CSRF-TOKEN') },
       }).then((response) => {
         if (response.data.statusType === 'success') {
-          this.deleteTask(this.position);
+          this.deleteTask({
+            category: this.category,
+            position: this.position,
+          });
         } else {
           this.setMainError(response.data.status);
         }
@@ -102,6 +106,8 @@ export default {
         date: this.date,
         time: this.time,
         description: this.description,
+        category: this.category,
+
         position: this.position,
         action: 'edit',
       });
@@ -113,6 +119,7 @@ export default {
     date: String,
     time: String,
     description: String,
+    category: String,
     position: Number,
 
     theme: {
