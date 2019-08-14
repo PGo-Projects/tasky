@@ -5,41 +5,51 @@ function extractTask(payload) {
     date: payload.date,
     time: payload.time,
     description: payload.description,
+    category: payload.category,
   };
 }
 
 const task = {
   namespaced: true,
   state: {
-    tasks: [],
+    tasks: {
+      'today': [],
+      'upcoming': [],
+      'longTerm': [],
+      'incomplete': [],
+      'completed': [],
+    },
   },
   mutations: {
     setTasks(state, payload) {
-      state.tasks = payload.tasks;
+      if (payload.tasks instanceof Array) {
+        state.tasks[payload.category] = payload.tasks;
+      }
     },
     insertTask(state, payload) {
       const newTask = extractTask(payload);
-      if (state.tasks.length === 0 || (payload.date === '' && payload.time === '')) {
+      const taskList = state.tasks[newTask.category];
+      if (taskList.length === 0 || (payload.date === '' && payload.time === '')) {
         payload.predecessor = -1;
         payload.successor = -1;
         payload.position = 0;
-        state.tasks.push(newTask);
+        taskList.push(newTask);
       } else {
-        const task = state.tasks[0];
+        const task = taskList[0];
         const time = new Date(`${payload.date} ${payload.time}`);
 
         if (time < new Date(`${task.date} ${task.time}`)) {
           payload.predecessor = -1;
           payload.successor = task.index;
           payload.position = 0;
-          state.tasks.splice(0, 0, newTask);
+          taskList.splice(0, 0, newTask);
         } else {
-          for (const [index, task] of state.tasks.entries()) {
+          for (const [index, task] of taskList.entries()) {
             if (index === state.tasks.length - 1) {
               payload.predecessor = task.index;
               payload.successor = -1;
               payload.position = index + 1;
-              state.tasks.push(newTask);
+              taskList.push(newTask);
               break;
             }
 
@@ -49,26 +59,39 @@ const task = {
               payload.predecessor = task.index;
               payload.successor = nextTask.index;
               payload.position = index + 1;
-              state.tasks.splice(payload.position, 0, newTask);
+              taskList.splice(payload.position, 0, newTask);
               break;
             }
           }
         }
       }
     },
-    updateTask(state, payload) {
-      const task = extractTask(payload);
-      state.tasks.splice(payload.position, 1, task);
-    },
-    deleteTask(state, position) {
-      state.tasks.splice(position, 1);
+    deleteTask(state, payload) {
+      const taskList = state.tasks[payload.category];
+      taskList.splice(payload.position, 1);
     },
     updateTaskIndex(state, payload) {
-      state.tasks[payload.position].index = payload.index;
+      const taskList = state.tasks[payload.category];
+      taskList[payload.position].index = payload.index;
     }
   },
+  actions: {
+    updateTask({ commit }, payload) {
+      const oldCategory = payload.oldCategory;
+      const oldPosition = payload.oldPosition;
+
+      commit('insertTask', payload);
+      payload.category = oldCategory;
+      payload.position = oldPosition;
+      commit('deleteTask', payload);
+    },
+  },
   getters: {
-    tasks: state => state.tasks,
+    todayTasks: state => state.tasks['today'],
+    upcomingTasks: state => state.tasks['upcoming'],
+    longTermTasks: state => state.tasks['longTerm'],
+    incompleteTasks: state => state.tasks['incomplete'],
+    completedTasks: state => state.tasks['completed'],
   },
 };
 
