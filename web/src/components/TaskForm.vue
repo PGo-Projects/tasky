@@ -146,11 +146,14 @@
 import axios from 'axios';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
+import taskMixin from '@/mixins/task';
+
 const NEW_ACTION = 'new';
 const EDIT_ACTION = 'edit';
 
 export default {
   name: 'TaskForm',
+  mixins: [taskMixin],
   mounted() {
     this.$nextTick(() => this.$refs.name.focus());
   },
@@ -221,8 +224,10 @@ export default {
     ...mapMutations('task', [
       'insertTask',
       'deleteTask',
-      'updateTask',
       'updateTaskIndex',
+    ]),
+    ...mapActions('task', [
+      'updateTask',
     ]),
     ...mapActions('taskForm', [
       'closeTaskForm',
@@ -249,7 +254,12 @@ export default {
         time: this.info.time,
         description: this.info.description,
         position: this.info.position,
+
+        oldCategory: this.info.category,
+        oldPosition: this.info.position,
       };
+
+      this.assignCategory(task);
       if (this.action === NEW_ACTION) {
         this.insertTask(task);
       }
@@ -261,6 +271,7 @@ export default {
         if (response.data.statusType === 'success') {
           if (this.action === NEW_ACTION) {
             this.updateTaskIndex({
+              category: task.category,
               position: task.position,
               index: parseInt(response.data.index, 10),
             });
@@ -269,7 +280,9 @@ export default {
           }
           this.closeTaskForm();
         } else {
-          this.deleteTask(task);
+          if (this.action === NEW_ACTION) {
+            this.deleteTask(task);
+          }
           this.setError(response.data.status);
         }
       }).catch((error) => {
