@@ -129,11 +129,15 @@ func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) {
 }
 
 func executeTaskOp(op taskOp, filter *task.Task, t *task.Task) (map[string]string, error) {
-	var data map[string]string
+	data := make(map[string]string)
 	switch op {
 	case insert:
+		err := taskdb.InsertTask(t)
+		if err != nil {
+			return data, err
+		}
 		data["index"] = strconv.FormatInt(t.Index, 10)
-		return data, taskdb.InsertTask(t)
+		return data, nil
 	case update:
 		current, err := taskdb.GetTask(filter.Username, filter.Index)
 		if err != nil {
