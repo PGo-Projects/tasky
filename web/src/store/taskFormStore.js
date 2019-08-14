@@ -16,6 +16,7 @@ const taskForm = {
         date: payload.date,
         time: payload.time,
         description: payload.description,
+        category: payload.category,
         position: payload.position,
       };
       state.action = payload.action;
@@ -30,6 +31,7 @@ const taskForm = {
         date: '',
         time: '',
         description: '',
+        category: '',
         position: -1,
 
         action: 'new',
