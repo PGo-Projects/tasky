@@ -124,7 +124,7 @@ func GetCategory(username, category string) ([]task.Task, error) {
 		return nil, err
 	}
 
-	var tasks_found []task.Task
+	var tasksFound []task.Task
 	for cursor.Next(context.TODO()) {
 		var t task.Task
 		if err := cursor.Decode(&t); err != nil {
@@ -133,11 +133,11 @@ func GetCategory(username, category string) ([]task.Task, error) {
 
 		// If not the index guard, append it
 		if t.Index != -1 {
-			tasks_found = append(tasks_found, t)
+			tasksFound = append(tasksFound, t)
 		}
 	}
 
-	return tasks_found, nil
+	return tasksFound, nil
 }
 
 func GetOrderedCategory(username, category string) ([]task.Task, error) {
@@ -158,15 +158,15 @@ func GetOrderedCategory(username, category string) ([]task.Task, error) {
 		}
 	}
 
-	var ordered_tasks []task.Task
-	ordered_tasks = append(ordered_tasks, firstTask)
+	var orderedTasks []task.Task
+	orderedTasks = append(orderedTasks, firstTask)
 
 	nextTask := tasks[indexMap[firstTask.Successor]]
 	for nextTask.Successor != -1 {
-		ordered_tasks = append(ordered_tasks, nextTask)
+		orderedTasks = append(orderedTasks, nextTask)
 		nextTask = tasks[indexMap[nextTask.Successor]]
 	}
-	return ordered_tasks, nil
+	return orderedTasks, nil
 }
 
 func attemptToInsert(t *task.Task) bool {
