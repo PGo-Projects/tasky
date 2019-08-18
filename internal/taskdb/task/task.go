@@ -63,6 +63,14 @@ type dateTime struct {
 	err   error
 }
 
+func (dt *dateTime) IsAfter(bound *dateTime) bool {
+	return dt.err == nil && bound.err == nil && dt.value.After(bound.value)
+}
+
+func (dt *dateTime) IsBefore(bound *dateTime) bool {
+	return dt.err == nil && bound.err == nil && dt.value.Before(bound.value)
+}
+
 func (dt *dateTime) IsAfterOrEqual(bound *dateTime) bool {
 	return dt.err == nil && bound.err == nil &&
 		(dt.value.After(bound.value) || dt.value.Equal(bound.value))
