@@ -262,6 +262,8 @@ export default {
       this.assignCategory(task);
       if (this.action === NEW_ACTION) {
         this.insertTask(task);
+      } else {
+        this.updateTask(task);
       }
 
       const resp = await fetch('/', response => response);
@@ -275,8 +277,6 @@ export default {
               position: task.position,
               index: parseInt(response.data.index, 10),
             });
-          } else {
-            this.updateTask(task);
           }
           this.closeTaskForm();
         } else {
