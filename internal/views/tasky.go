@@ -38,7 +38,6 @@ func RegisterTaskyEndpoints(mux *chi.Mux) {
 	mux.Get("/thought_cloud", taskyHandler)
 
 	mux.Get("/get_category/{category}", getCategoryHandler)
-	mux.Get("/get_category/", getCategoryHandler)
 
 	mux.Post("/insert_task", insertTaskHandler)
 	mux.Post("/update_task", updateTaskHandler)
