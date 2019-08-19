@@ -20,7 +20,8 @@ import (
 type taskOp int
 
 const (
-	successMessage = "We have processed the task successfully!"
+	successCategoryMessage = "We have processed the category successfully!"
+	successTaskMessage     = "We have processed the task successfully!"
 
 	insert taskOp = iota
 	update
@@ -67,7 +68,7 @@ func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
 			responseJSON = response.Error(response.ErrInternalServer)
 		} else {
 			responseJSON, err = json.Marshal(map[string]string{
-				"status":     successMessage,
+				"status":     successCategoryMessage,
 				"statusType": response.StatusSuccess,
 				"tasks":      string(jsonTasks),
 			})
@@ -118,7 +119,7 @@ func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) {
 			output.Errorln(err)
 			responseJSON = response.Error(response.ErrBadRequest)
 		} else {
-			data["status"] = successMessage
+			data["status"] = successTaskMessage
 			data["statusType"] = response.StatusSuccess
 			responseJSON = response.General(data)
 		}
