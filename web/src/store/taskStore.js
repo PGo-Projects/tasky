@@ -77,13 +77,15 @@ const task = {
   },
   actions: {
     updateTask({ commit }, payload) {
-      const oldCategory = payload.oldCategory;
-      const oldPosition = payload.oldPosition;
+      const category = payload.category;
+      const position = payload.position;
 
       commit('insertTask', payload);
-      payload.category = oldCategory;
-      payload.position = oldPosition;
+      payload.category = payload.oldCategory;
+      payload.position = payload.oldPosition;
       commit('deleteTask', payload);
+      payload.category = category;
+      payload.position = position;
     },
   },
   getters: {
