@@ -45,7 +45,7 @@ const task = {
           taskList.splice(0, 0, newTask);
         } else {
           for (const [index, task] of taskList.entries()) {
-            if (index === state.tasks.length - 1) {
+            if (index === taskList.length - 1) {
               payload.predecessor = task.index;
               payload.successor = -1;
               payload.position = index + 1;
@@ -53,7 +53,7 @@ const task = {
               break;
             }
 
-            const nextTask = state.tasks[index + 1];
+            const nextTask = taskList[index + 1];
             if (time >= new Date(`${task.date} ${task.time}`) &&
                 time <= new Date(`${nextTask.date} ${nextTask.time}`)) {
               payload.predecessor = task.index;
