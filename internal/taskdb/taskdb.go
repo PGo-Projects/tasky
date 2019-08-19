@@ -45,6 +45,38 @@ func GetTaskWithCategory(category, username string, index int64) (*task.Task, er
 	return &t, err
 }
 
+func UpdateTask(filter *task.Task, t *task.Task) error {
+	oldT, err := GetTask(t.Username, t.Index)
+	if err != nil {
+		return err
+	}
+	predecessor, err := GetTaskWithCategory(t.OldCategory, t.Username, oldT.Predecessor)
+	if err != nil {
+		return err
+	}
+	successor, err := GetTaskWithCategory(t.OldCategory, t.Username, oldT.Successor)
+	if err != nil {
+		return err
+	}
+	if err := linkTasks(predecessor, successor); err != nil {
+		return err
+	}
+
+	newPredecessor, err := GetTaskWithCategory(t.Category, t.Username, t.Predecessor)
+	if err != nil {
+		return err
+	}
+	newSuccessor, err := GetTaskWithCategory(t.Category, t.Username, t.Successor)
+	if err != nil {
+		return err
+	}
+	if linkTasks(newPredecessor, t) != nil || linkTasks(t, newSuccessor) != nil {
+		return errors.New("Linking failed")
+	}
+
+	return ReplaceTask(filter, t)
+}
+
 func ReplaceTask(filter *task.Task, t *task.Task) error {
 	dbName := viper.GetString(config.DBName)
 	tasks := dbClient.Database(dbName).Collection("tasks")
