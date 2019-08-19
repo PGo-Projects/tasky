@@ -31,6 +31,20 @@ func GetTask(username string, index int64) (*task.Task, error) {
 	return &t, err
 }
 
+func GetTaskWithCategory(category, username string, index int64) (*task.Task, error) {
+	dbName := viper.GetString(config.DBName)
+	tasks := dbClient.Database(dbName).Collection("tasks")
+
+	filter := task.Task{
+		Username: username,
+		Category: category,
+		Index:    index,
+	}
+	var t task.Task
+	err := tasks.FindOne(context.TODO(), filter).Decode(&t)
+	return &t, err
+}
+
 func ReplaceTask(filter *task.Task, t *task.Task) error {
 	dbName := viper.GetString(config.DBName)
 	tasks := dbClient.Database(dbName).Collection("tasks")
@@ -99,11 +113,11 @@ func DeleteTask(t *task.Task) error {
 		return errors.New("Task could not be found and so was not deleted.")
 	}
 
-	predecessor, err := GetTask(t.Username, t.Predecessor)
+	predecessor, err := GetTaskWithCategory(t.Category, t.Username, t.Predecessor)
 	if err != nil {
 		return err
 	}
-	successor, err := GetTask(t.Username, t.Successor)
+	successor, err := GetTaskWithCategory(t.Category, t.Username, t.Successor)
 	if err != nil {
 		return err
 	}
@@ -170,11 +184,11 @@ func GetOrderedCategory(username, category string) ([]task.Task, error) {
 }
 
 func attemptToInsert(t *task.Task) bool {
-	predecessor, err := GetTask(t.Username, t.Predecessor)
+	predecessor, err := GetTaskWithCategory(t.Category, t.Username, t.Predecessor)
 	if err != nil {
 		return false
 	}
-	successor, err := GetTask(t.Username, t.Successor)
+	successor, err := GetTaskWithCategory(t.Category, t.Username, t.Successor)
 	if err != nil {
 		return false
 	}
