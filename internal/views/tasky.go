@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/PGo-Projects/output"
+	"github.com/PGo-Projects/tasky/internal/categorydb"
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/taskdb"
 	"github.com/PGo-Projects/tasky/internal/taskdb/task"
@@ -58,8 +59,8 @@ func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var responseJSON []byte
-	category := chi.URLParam(r, "category")
-	tasks, err := taskdb.GetOrderedCategory(username, category)
+	taskCategory := chi.URLParam(r, "category")
+	tasks, err := categorydb.GetOrderedCategory(username, taskCategory)
 	if err != nil {
 		responseJSON = response.Error(response.ErrInternalServer)
 	} else {
