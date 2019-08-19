@@ -13,12 +13,14 @@ type Task struct {
 	Date        string `bson:"date,omitempty" json:"date"`
 	Time        string `bson:"time,omitempty" json:"time"`
 	Description string `bson:"description,omitempty" json:"description"`
+	// Only used to store the old category when updating a task
+	OldCategory string `bson:"-" json:"oldCategory"`
 	Category    string `bson:"category,omitempty" json:"category"`
 
 	Username    string `bson:"username" json:"-"`
 	Index       int64  `bson:"index,omitempty" json:"index"`
-	Predecessor int64  `bson:"predecessor,omitempty" json:"-"`
-	Successor   int64  `bson:"successor,omitempty" json:"-"`
+	Predecessor int64  `bson:"predecessor,omitempty" json:"predecessor"`
+	Successor   int64  `bson:"successor,omitempty" json:"successor"`
 }
 
 func (t *Task) DateTime() *dateTime {
