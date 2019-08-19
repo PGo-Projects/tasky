@@ -111,6 +111,7 @@ func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) {
 		filter := &task.Task{
 			Index:    t.Index,
 			Username: t.Username,
+			Category: t.OldCategory,
 		}
 		data, err := executeTaskOp(op, filter, t)
 		if err != nil {
@@ -139,13 +140,7 @@ func executeTaskOp(op taskOp, filter *task.Task, t *task.Task) (map[string]strin
 		data["index"] = strconv.FormatInt(t.Index, 10)
 		return data, nil
 	case update:
-		current, err := taskdb.GetTask(filter.Username, filter.Index)
-		if err != nil {
-			return data, err
-		}
-		t.Predecessor = current.Predecessor
-		t.Successor = current.Successor
-		return data, taskdb.ReplaceTask(filter, t)
+		return data, taskdb.UpdateTask(filter, t)
 	case delete:
 		return data, taskdb.DeleteTask(t)
 	default:
