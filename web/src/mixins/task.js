@@ -1,12 +1,12 @@
 Date.prototype.withinXDaysOfNow = function(range) {
-  const todayDate = new Date();
-  const newDay = todayDate.getUTCDate() + range + 1;
+  const now = new Date();
   const boundDate = new Date(
-    Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth(), newDay)
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + range + 1) +
+      now.getTimezoneOffset() * 60000
   );
 
-  return (range < 0) ? (this <= todayDate && this >= boundDate) :
-    (this >= todayDate && this <= boundDate);
+  return (range < 0) ? (this <= now && this >= boundDate) :
+    (this >= now && this <= boundDate);
 };
 
 const taskMixin = {
