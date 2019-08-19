@@ -185,7 +185,14 @@ func linkTasks(p *task.Task, s *task.Task) error {
 	pf := *p
 	sf := *s
 
-	if p.Index == s.Index {
+	if s.Index == -1 {
+		// s refers to the index guard, so just update the predecessor and update
+		// the database
+		if p.SetSuccessor(s) != nil {
+			return errors.New("Linking failed!")
+		}
+		return ReplaceTask(&pf, p)
+	} else if p.Index == s.Index {
 		// p and s references the same task, so just update the predecessor and
 		// successor for one of them and update the database
 		if p.SetPredecessor(p) != nil || p.SetSuccessor(p) != nil {
