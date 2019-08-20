@@ -27,13 +27,16 @@ export default {
   components: { Task },
   name: 'todaytasks',
   mounted() {
-    axios.get('/get_category/today').then((resp) => {
-      const tasks = JSON.parse(resp.data.tasks);
-      this.setTasks({
-        category: 'today',
-        tasks,
+    const categories = ['incomplete', 'today', 'upcoming', 'longTerm', 'completed'];
+    for (let category of categories) {
+      axios.get(`/get_category/${category}`).then((resp) => {
+        const tasks = JSON.parse(resp.data.tasks);
+        this.setTasks({
+          category,
+          tasks,
+        });
       });
-    });
+    }
   },
   computed: {
     ...mapGetters('task', [
