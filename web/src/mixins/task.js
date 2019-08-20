@@ -1,13 +1,10 @@
-Date.prototype.withinXDaysOfNow = function(range) {
+function withinXDaysOfNow(self, range) {
   const now = new Date();
-  const boundDate = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + range + 1) +
-      now.getTimezoneOffset() * 60000
-  );
+  const boundDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
-  return (range < 0) ? (this <= now && this >= boundDate) :
-    (this >= now && this <= boundDate);
-};
+  return (range < 0) ? (self <= now && self >= boundDate) :
+    (self >= now && self <= boundDate);
+}
 
 const taskMixin = {
   methods: {
@@ -15,9 +12,9 @@ const taskMixin = {
       const todayDate = new Date();
       const taskDate = new Date(`${task.date} ${task.time}`);
 
-      if (taskDate.withinXDaysOfNow(0)) {
+      if (withinXDaysOfNow(taskDate, 0)) {
         task.category = 'today';
-      } else if (taskDate.withinXDaysOfNow(7)) {
+      } else if (withinXDaysOfNow(taskDate, 7)) {
         task.category = 'upcoming';
       } else if (taskDate > todayDate) {
         task.category = 'longTerm';
