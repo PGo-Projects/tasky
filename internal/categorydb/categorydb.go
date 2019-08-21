@@ -137,10 +137,11 @@ func update(username, category string, previous, current category.Category) erro
 		return err
 	}
 
-	// Update the successor of the last task in the database for given category
+	// Update the successor of the last task in the database for previous category
 	if len(tasks) > 0 && previous.Valid(tasks[0]) {
 		filter := &task.Task{
 			Username: previousLast.Username,
+			Category: previousLast.Category,
 			Index:    previousLast.Index,
 		}
 		previousLast.Successor = tasks[0].Index
@@ -151,13 +152,13 @@ func update(username, category string, previous, current category.Category) erro
 
 	for _, elem := range tasks {
 		if previous.Valid(elem) {
-			if err := taskdb.DeleteTask(&elem); err != nil {
-				return err
-			}
+			filter := elem
 
+			elem.Category = previous.Name()
 			elem.Predecessor = previousLast.Index
 			elem.Successor = -1
-			if err := taskdb.InsertTask(&elem); err != nil {
+
+			if err := taskdb.UpdateTask(&filter, &elem); err != nil {
 				return err
 			}
 
