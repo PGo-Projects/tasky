@@ -43,16 +43,16 @@ func GetTaskWithCategory(category, username string, index int64) (*task.Task, er
 	return &t, err
 }
 
-func UpdateTask(filter *task.Task, t *task.Task) error {
-	oldT, err := GetTask(t.Username, t.Index)
+func UpdateTask(f *task.Task, t *task.Task) error {
+	f, err := GetTaskWithCategory(f.Category, f.Username, f.Index)
 	if err != nil {
 		return err
 	}
-	predecessor, err := GetTaskWithCategory(t.OldCategory, t.Username, oldT.Predecessor)
+	predecessor, err := GetTaskWithCategory(f.Category, t.Username, f.Predecessor)
 	if err != nil {
 		return err
 	}
-	successor, err := GetTaskWithCategory(t.OldCategory, t.Username, oldT.Successor)
+	successor, err := GetTaskWithCategory(f.Category, t.Username, f.Successor)
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func UpdateTask(filter *task.Task, t *task.Task) error {
 		return errors.New("Linking failed")
 	}
 
-	return ReplaceTask(filter, t)
+	return ReplaceTask(f, t)
 }
 
 func ReplaceTask(filter *task.Task, t *task.Task) error {
