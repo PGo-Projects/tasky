@@ -2,8 +2,8 @@ function withinXDaysOfNow(self, range) {
   const now = new Date();
   const boundDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
-  return (range < 0) ? (self <= now && self >= boundDate) :
-    (self >= now && self <= boundDate);
+  return (range < 0) ? (self <= now && self >= boundDate)
+    : (self >= now && self <= boundDate);
 }
 
 const taskMixin = {
@@ -22,7 +22,7 @@ const taskMixin = {
         task.category = 'incomplete';
       }
     },
-  }
+  },
 };
 
 export default taskMixin;
