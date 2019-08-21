@@ -38,6 +38,7 @@ func RegisterTaskyEndpoints(mux *chi.Mux) {
 	mux.Get("/thought_cloud", taskyHandler)
 
 	mux.Get("/get_category/{category}", getCategoryHandler)
+	mux.Post("/update_category/{category}", updateCategoryHandler)
 
 	mux.Post("/insert_task", insertTaskHandler)
 	mux.Post("/update_task", updateTaskHandler)
@@ -76,6 +77,27 @@ func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
 				responseJSON = response.Error(response.ErrInternalServer)
 			}
 		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
+}
+
+func updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	username, isLoggedIn := webauth.IsLoggedIn(r)
+	if !isLoggedIn {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+
+	var responseJSON []byte
+	taskCategory := chi.URLParam(r, "category")
+	err := categorydb.Update(username, taskCategory)
+	if err != nil {
+		responseJSON = response.Error(response.ErrInternalServer)
+	} else {
+		responseJSON = response.Success(successCategoryMessage)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
