@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import RouterGuard from './routerGuard';
+import TaskUpdater from './taskUpdater';
 import Home from '../views/Home.vue';
 
 Vue.use(Router);
@@ -64,5 +65,6 @@ const router = new Router({
 });
 
 router.beforeEach(RouterGuard);
+router.beforeEach(TaskUpdater);
 
 export default router;
