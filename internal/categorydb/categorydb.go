@@ -114,13 +114,13 @@ func GetLast(username, category string) (*task.Task, error) {
 
 func Update(username, taskCategory string) error {
 	if current := category.GetChronological(taskCategory); current != nil {
-		if current.HasPrevious() {
-			previous := current.Previous()
-			update(username, taskCategory, previous, current)
-		}
 		if current.HasNext() {
 			next := current.Next()
 			update(username, taskCategory, current, next)
+		}
+		if current.HasPrevious() {
+			previous := current.Previous()
+			update(username, taskCategory, previous, current)
 		}
 	}
 	return nil
