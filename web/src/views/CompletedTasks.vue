@@ -27,7 +27,7 @@ export default {
   components: { Task },
   name: 'completedtasks',
   mounted() {
-    axios.get('/get_category/completedTasks').then((resp) => {
+    axios.get('/get_category/completed').then((resp) => {
       const tasks = JSON.parse(resp.data.tasks);
       this.setTasks({
         category: 'completed',
