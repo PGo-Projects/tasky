@@ -12,7 +12,6 @@ func init() {
 		&today{},
 		&upcoming{},
 		&longTerm{},
-		&completed{},
 	})
 }
 
@@ -26,8 +25,6 @@ func GetChronological(category string) Category {
 		return &upcoming{}
 	case "longTerm":
 		return &longTerm{}
-	case "completed":
-		return &completed{}
 	default:
 		return nil
 	}
@@ -177,31 +174,4 @@ func (lt *longTerm) Valid(t task.Task) bool {
 
 	return t.DateTime().IsAfter(boundTask.DateTime())
 
-}
-
-type completed struct {
-}
-
-func (c *completed) Name() string {
-	return "completed"
-}
-
-func (c *completed) HasPrevious() bool {
-	return false
-}
-
-func (c *completed) HasNext() bool {
-	return false
-}
-
-func (c *completed) Previous() Category {
-	return nil
-}
-
-func (c *completed) Next() Category {
-	return nil
-}
-
-func (c *completed) Valid(t task.Task) bool {
-	return true
 }
