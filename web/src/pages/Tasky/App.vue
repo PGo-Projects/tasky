@@ -53,14 +53,14 @@
           <v-list-tile-title>Completed</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile to="/thought_cloud">
-        <v-list-tile-action>
-          <v-icon>far fa-cloud</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Thought Cloud</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <!-- <v-list-tile to="/thought_cloud"> -->
+      <!--   <v-list-tile-action> -->
+      <!--     <v-icon>far fa-cloud</v-icon> -->
+      <!--   </v-list-tile-action> -->
+      <!--   <v-list-tile-content> -->
+      <!--     <v-list-tile-title>Thought Cloud</v-list-tile-title> -->
+      <!--   </v-list-tile-content> -->
+      <!-- </v-list-tile> -->
     </v-list>
     <div class="hidden-lg-and-up">
       <v-divider></v-divider>
