@@ -8,6 +8,7 @@ import (
 
 	"github.com/PGo-Projects/output"
 	"github.com/PGo-Projects/tasky/internal/categorydb"
+	"github.com/PGo-Projects/tasky/internal/categorydb/category/completed"
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/taskdb"
 	"github.com/PGo-Projects/tasky/internal/taskdb/task"
@@ -39,6 +40,7 @@ func RegisterTaskyEndpoints(mux *chi.Mux) {
 
 	mux.Get("/get_category/{category}", getCategoryHandler)
 	mux.Post("/update_category/{category}", updateCategoryHandler)
+	mux.Post("/is_completed/{mark}", isCompletedHandler)
 
 	mux.Post("/insert_task", insertTaskHandler)
 	mux.Post("/update_task", updateTaskHandler)
@@ -98,6 +100,43 @@ func updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 		responseJSON = response.Error(response.ErrInternalServer)
 	} else {
 		responseJSON = response.Success(successCategoryMessage)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
+}
+
+func isCompletedHandler(w http.ResponseWriter, r *http.Request) {
+	username, isLoggedIn := webauth.IsLoggedIn(r)
+	if !isLoggedIn {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+
+	var responseJSON []byte
+	t, err := task.DecodeFromRequest(r)
+	if err != nil {
+		output.Errorln(err)
+		responseJSON = response.Error(response.ErrInternalServer)
+	} else {
+		t.Username = username
+
+		var err error
+		isCompleted := chi.URLParam(r, "mark")
+		if isCompleted == "true" {
+			err = completed.Mark(t)
+		} else if isCompleted == "false" {
+			err = completed.Unmark(t)
+		} else {
+			err = errors.New("Not a valid option")
+		}
+		if err != nil {
+			output.Errorln(err)
+			responseJSON = response.Error(response.ErrInternalServer)
+		} else {
+			responseJSON = response.Success(successTaskMessage)
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
