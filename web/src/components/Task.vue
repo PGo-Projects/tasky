@@ -3,7 +3,7 @@
   <v-container>
     <v-layout row wrap>
       <v-flex xs1>
-        <v-checkbox v-model="completed"></v-checkbox>
+        <v-checkbox v-model="completed" @click.stop="isCompletedHandler();"></v-checkbox>
       </v-flex>
 
       <v-flex xs10>
@@ -50,11 +50,14 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import axios from 'axios';
+
+import taskMixin from '@/mixins/task';
 
 export default {
   name: 'task',
+  mixins: [taskMixin],
   computed: {
     useDarkTheme() {
       return this.theme === 'dark';
@@ -62,7 +65,7 @@ export default {
   },
   data() {
     return {
-      completed: false,
+      completed: this.category === 'completed',
     };
   },
   methods: {
@@ -74,6 +77,9 @@ export default {
     ]),
     ...mapMutations('taskForm', [
       'openTaskForm',
+    ]),
+    ...mapActions('task', [
+      'updateTask',
     ]),
     async remove() {
       const resp = await fetch('/', response => response);
@@ -110,6 +116,38 @@ export default {
 
         position: this.position,
         action: 'edit',
+      });
+    },
+    async isCompletedHandler() {
+      const task = {
+        index: this.index,
+        name: this.name,
+        date: this.date,
+        time: this.time,
+        description: this.description,
+        category: this.category,
+        position: this.position,
+
+        oldCategory: this.category,
+        oldPosition: this.position,
+      };
+      if (!this.completed) {
+        task.category = 'completed';
+        this.updateTask(task);
+      } else {
+        this.assignCategory(task);
+        this.updateTask(task);
+      }
+
+      const resp = await fetch('/', response => response);
+      axios.post(`/is_completed/${!this.completed}`, task, {
+        headers: { 'X-CSRF-TOKEN': resp.headers.get('X-CSRF-TOKEN') },
+      }).then((response) => {
+        if (response.data.statusType !== 'success') {
+          this.setMainError(response.data.status);
+        }
+      }).catch((error) => {
+        this.setMainError(error);
       });
     },
   },
