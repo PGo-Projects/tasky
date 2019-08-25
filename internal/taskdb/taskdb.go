@@ -180,12 +180,14 @@ func linkTasks(p *task.Task, s *task.Task) error {
 	} else if p.Index == s.Index {
 		// p and s references the same task, so just update the predecessor and
 		// successor for one of them and update the database
-		if p.SetPredecessor(p) != nil || p.SetSuccessor(p) != nil {
+		if (p.SetPredecessor(p) != nil || p.SetSuccessor(p) != nil) &&
+			p.Category != "completed" {
 			return errors.New("Linking failed!")
 		}
 		return ReplaceTask(&pf, p)
 	} else {
-		if p.SetSuccessor(s) != nil || s.SetPredecessor(p) != nil {
+		if (p.SetSuccessor(s) != nil || s.SetPredecessor(p) != nil) &&
+			p.Category != "completed" && s.Category != "completed" {
 			return errors.New("Linked failed!")
 		}
 		if err := ReplaceTask(&pf, p); err != nil {
