@@ -1,6 +1,6 @@
 function withinXDaysOfNow(self, range) {
   const now = new Date();
-  const boundDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const boundDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + range + 1);
 
   return (range < 0) ? (self <= now && self >= boundDate)
     : (self >= now && self <= boundDate);
