@@ -56,7 +56,7 @@ func taskyHandler(w http.ResponseWriter, r *http.Request) {
 func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	username, isLoggedIn := webauth.IsLoggedIn(r)
 	if !isLoggedIn {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, webauth.LoginRoute, http.StatusFound)
 		return
 	}
 
@@ -89,7 +89,7 @@ func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
 func updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	username, isLoggedIn := webauth.IsLoggedIn(r)
 	if !isLoggedIn {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, webauth.LoginRoute, http.StatusFound)
 		return
 	}
 
@@ -110,7 +110,7 @@ func updateCategoryHandler(w http.ResponseWriter, r *http.Request) {
 func isCompletedHandler(w http.ResponseWriter, r *http.Request) {
 	username, isLoggedIn := webauth.IsLoggedIn(r)
 	if !isLoggedIn {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, webauth.LoginRoute, http.StatusFound)
 		return
 	}
 
@@ -159,7 +159,7 @@ func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 func handleGenericTask(w http.ResponseWriter, r *http.Request, op taskOp) {
 	username, isLoggedIn := webauth.IsLoggedIn(r)
 	if !isLoggedIn {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, webauth.LoginRoute, http.StatusFound)
 		return
 	}
 
