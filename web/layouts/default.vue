@@ -1,6 +1,6 @@
 <template>
 <v-app>
-  <v-navigation-drawer v-model="drawer" app clipped fixed>
+  <v-navigation-drawer v-model="drawer" class="d-lg-none" app clipped fixed>
     <v-list-item v-if="username === undefined" nuxt to="/login">
       <v-list-item-icon>
         <font-awesome-icon :icon="['fas', 'sign-in-alt']" />
@@ -76,7 +76,31 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import authenticationMixin from '../mixins/authentication';
+
 export default {
   mixins: [authenticationMixin],
+  data() {
+    return {
+      drawer: false,
+    };
+  },
+  computed: {
+    ...mapGetters('authentication', ['username']),
+  },
+  created() {
+    this.checkAuth();
+  },
+  methods: {
+    ...mapActions('authentication', ['checkAuth']),
+  },
 };
 </script>
+
+<style lang="scss">
+.toolbar-title {
+    color: inherit;
+    text-decoration: inherit;
+}
+</style>
