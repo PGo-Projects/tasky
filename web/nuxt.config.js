@@ -43,6 +43,21 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-material-design-icons',
+    [
+     'nuxt-fontawesome', {
+       imports: [
+	{
+	 set: '@fortawesome/pro-solid-svg-icons',
+	 icons: ['faSignInAlt', 'faSignOutAlt']
+	},
+	{
+	 set: '@fortawesome/pro-light-svg-icons',
+	 icons: ['faAngleDown']
+	}
+       ]
+     }
+    ]
   ],
   /*
   ** vuetify module configuration
