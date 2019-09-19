@@ -105,3 +105,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Don't include the code for Font Awesome pro access
+.npmrc
