@@ -10,7 +10,7 @@
       lg="4"
       offset-lg="4"
      >
-      <login-form successful-login-link="/" successful-login-force-load="true" />
+      <login-form successful-login-link="/today" successful-login-force-load="true" />
     </v-col>
   </v-row>
 </v-container>
