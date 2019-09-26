@@ -24,7 +24,10 @@ import (
 func isValidStaticAssetPath(path string) bool {
 	webAssetsDirectory := viper.GetString(config.WebAssetsPathKey)
 	resourcePath := filepath.Join(webAssetsDirectory, path)
-	_, err := os.Stat(resourcePath)
+	stat, err := os.Stat(resourcePath)
+	if err == nil {
+		return !stat.IsDir()
+	}
 	return !os.IsNotExist(err)
 }
 
