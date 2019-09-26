@@ -31,13 +31,6 @@ const (
 )
 
 func RegisterTaskyEndpoints(mux *chi.Mux) {
-	mux.Get("/today", taskyHandler)
-	mux.Get("/upcoming", taskyHandler)
-	mux.Get("/long_term", taskyHandler)
-	mux.Get("/incomplete", taskyHandler)
-	mux.Get("/completed", taskyHandler)
-	mux.Get("/thought_cloud", taskyHandler)
-
 	mux.Get("/get_category/{category}", getCategoryHandler)
 	mux.Post("/update_category/{category}", updateCategoryHandler)
 	mux.Post("/is_completed/{mark}", isCompletedHandler)
@@ -45,12 +38,6 @@ func RegisterTaskyEndpoints(mux *chi.Mux) {
 	mux.Post("/insert_task", insertTaskHandler)
 	mux.Post("/update_task", updateTaskHandler)
 	mux.Post("/delete_task", deleteTaskHandler)
-}
-
-func taskyHandler(w http.ResponseWriter, r *http.Request) {
-	r.URL.Path = "/tasky.html"
-	webAssetsDirectory := http.Dir(viper.GetString(config.WebAssetsPathKey))
-	gzipped.FileServer(webAssetsDirectory).ServeHTTP(w, r)
 }
 
 func getCategoryHandler(w http.ResponseWriter, r *http.Request) {
