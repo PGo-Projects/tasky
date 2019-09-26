@@ -27,15 +27,15 @@
 
   <v-app-bar app fixed clipped-left dark color="primary">
     <v-app-bar-nav-icon class="d-lg-none" @click.stop="drawer = !drawer;" />
-    
+
     <v-toolbar-title @click.stop="drawer = false;">
       <nuxt-link to="/" class="toolbar-title">
         Tasky
       </nuxt-link>
     </v-toolbar-title>
-    
+
     <v-spacer />
-    
+
     <v-toolbar-items class="d-none d-lg-block">
       <v-btn v-if="username === undefined" text nuxt to="/login">
         <font-awesome-icon :icon="['fas', 'sign-in-alt']" style="font-size: 30px" />
@@ -60,7 +60,7 @@
         </v-list>
         </v-menu>
     </v-toolbar-items>
-  </v-app-bar> 
+  </v-app-bar>
 
   <v-content>
     <nuxt />
