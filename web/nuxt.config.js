@@ -49,11 +49,15 @@ export default {
        imports: [
 	{
 	 set: '@fortawesome/pro-solid-svg-icons',
-	 icons: ['faSignInAlt', 'faSignOutAlt']
+	 icons: ['faSignInAlt', 'faSignOutAlt', 'faStar']
 	},
 	{
 	 set: '@fortawesome/pro-light-svg-icons',
 	 icons: ['faAngleDown']
+	},
+	{
+	 set: '@fortawesome/pro-regular-svg-icons',
+	 icons: ['faPlus', 'faCalendarWeek', 'faCalendar', 'faCalendarExclamation', 'faCalendarCheck']
 	}
        ]
      }
