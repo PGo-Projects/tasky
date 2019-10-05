@@ -4,7 +4,7 @@ const protectedPaths = [
 ];
 
 export default async function ({ store, route, redirect }) {
-  await store.dispatch('authentication/checkAuh');
+  await store.dispatch('authentication/checkAuth');
 
   if (route.path === '/login' || route.path === '/register') {
     if (store.getters['authentication/isLoggedIn']) {
