@@ -9,14 +9,11 @@ import (
 	"github.com/PGo-Projects/output"
 	"github.com/PGo-Projects/tasky/internal/categorydb"
 	"github.com/PGo-Projects/tasky/internal/categorydb/category/completed"
-	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/taskdb"
 	"github.com/PGo-Projects/tasky/internal/taskdb/task"
 	"github.com/PGo-Projects/webauth"
 	response "github.com/PGo-Projects/webresponse"
 	"github.com/go-chi/chi"
-	"github.com/lpar/gzipped"
-	"github.com/spf13/viper"
 )
 
 type taskOp int
