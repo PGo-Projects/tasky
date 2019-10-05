@@ -3,7 +3,7 @@
   <v-navigation-drawer v-model="drawer" app clipped fixed>
     <v-list-item @click.stop="openEmptyTaskForm();">
       <v-list-item-icon>
-        <font-awesome-icon :icon="['far', 'plus']" />
+        <font-awesome-icon :icon="['far', 'plus']" style="font-size: 20px;" />
       </v-list-item-icon>
       <v-list-item-content>
         <v-list-item-title>
@@ -14,10 +14,10 @@
 
     <v-divider />
 
-    <v-list dense>
-      <v-list-item nuxt to="/today">
+    <v-list dense nav>
+      <v-list-item nuxt to="/today" color="info">
         <v-list-item-icon>
-          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon class="mt-1" :icon="['fas', 'star']" style="font-size: 20px;" />
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -25,9 +25,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item nuxt to="/upcoming">
+      <v-list-item nuxt to="/upcoming" color="info">
         <v-list-item-icon>
-          <font-awesome-icon class="ml-1" :icon="['far', 'calendar-week']" />
+          <font-awesome-icon class="ml-1 mt-1" :icon="['far', 'calendar-week']" style="font-size: 20px;" />
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -35,9 +35,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item nuxt to="/long_term">
+      <v-list-item nuxt to="/long_term" color="info">
         <v-list-item-icon>
-          <font-awesome-icon class="ml-1" :icon="['far', 'calendar']" />
+          <font-awesome-icon class="ml-1 mt-1" :icon="['far', 'calendar']" style="font-size: 20px;" />
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -45,9 +45,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item nuxt to="/incomplete">
+      <v-list-item nuxt to="/incomplete" color="info">
         <v-list-item-icon>
-          <font-awesome-icon class="ml-1" :icon="['far', 'calendar-exclamation']" />
+          <font-awesome-icon class="ml-1 mt-1" :icon="['far', 'calendar-exclamation']" style="font-size: 20px;" />
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -55,9 +55,9 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item nuxt to="/completed">
+      <v-list-item nuxt to="/completed" color="info">
         <v-list-item-icon>
-          <font-awesome-icon class="ml-1" :icon="['far', 'calendar-check']" />
+          <font-awesome-icon class="ml-1 mt-1" :icon="['far', 'calendar-check']" style="font-size: 20px;" />
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
@@ -84,7 +84,7 @@
         <div v-else>
           <v-list-item nuxt to="/logout">
             <v-list-item-icon>
-              <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+              <font-awesome-icon :icon="['fas', 'sign-out-alt']" style="font-size: 20px;" />
           </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>
@@ -145,6 +145,11 @@
     </v-col>
   </v-footer>
 
+  <task-form v-if="taskInfo !== undefined" v-model="taskOpenForm"
+             :info="taskInfo"
+             :action="taskAction">
+  </task-form>
+
   <v-dialog v-if="mainStatus !== undefined" value persistent max-width="500px">
     <v-card>
       <v-card-text>
@@ -166,8 +171,11 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import authenticationMixin from '../mixins/authentication';
 
+import TaskForm from '../components/TaskForm.vue';
+
 export default {
   mixins: [authenticationMixin],
+  components: { TaskForm },
   data() {
     return {
       drawer: true,
@@ -176,9 +184,15 @@ export default {
   computed: {
     ...mapGetters('authentication', ['username']),
     ...mapGetters('status', ['mainStatus']),
+    ...mapGetters('taskForm', [
+      'taskOpenForm',
+      'taskInfo',
+      'taskAction',
+    ]),
   },
   methods: {
     ...mapActions('authentication', ['checkAuth']),
+    ...mapActions('taskForm', ['openEmptyTaskForm']),
     ...mapMutations('status', ['clearMainStatus']),
   },
 };
