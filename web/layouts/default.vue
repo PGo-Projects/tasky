@@ -100,7 +100,7 @@ export default {
 
 <style lang="scss">
 .toolbar-title {
-    color: inherit;
+    color: inherit !important;
     text-decoration: inherit;
 }
 </style>
