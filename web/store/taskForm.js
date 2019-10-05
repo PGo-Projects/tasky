@@ -5,7 +5,7 @@ export const state = () => ({
 });
 
 export const mutations = {
-  justCloseForm(state) {
+  justCloseTaskForm(state) {
     state.openForm = false;
   },
   openTaskForm(state, payload) {
@@ -36,6 +36,10 @@ export const actions = {
       
       action: 'new',
     }); 
+  },
+  closeTaskForm({ commit }) {
+    commit('status/clearStatus', null, { root: true });
+    commit('justCloseTaskForm');
   },
 };
 
